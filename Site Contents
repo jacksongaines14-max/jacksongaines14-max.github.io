@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JG Website Builds</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --blue-deep: #16324F;
+    --blue-mid: #234D74;
+    --line-cyan: #7FC1E0;
+    --paper: #EEEAE0;
+    --ink: #182228;
+    --graphite: #6C7A82;
+    --signal: #E2622B;
+    --signal-dark: #C24F1E;
+  }
+
+  *{ margin:0; padding:0; box-sizing:border-box; }
+  html{ scroll-behavior:smooth; }
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'IBM Plex Sans', sans-serif;
+    line-height:1.5;
+    overflow-x:hidden;
+  }
+  h1,h2,h3{
+    font-family:'Space Grotesk', sans-serif;
+    font-weight:600;
+    letter-spacing:-0.01em;
+  }
+  .mono{ font-family:'IBM Plex Mono', monospace; }
+  a{ color:inherit; text-decoration:none; }
+  .wrap{ max-width:1120px; margin:0 auto; padding:0 32px; }
+  @media (prefers-reduced-motion: reduce){
+    *{ animation-duration:0.01ms !important; animation-iteration-count:1 !important; transition-duration:0.01ms !important; }
+  }
+
+  header{
+    position:sticky;
+    top:0;
+    z-index:50;
+    background:rgba(238,234,224,0.92);
+    backdrop-filter:blur(6px);
+    border-bottom:1px solid rgba(24,34,40,0.12);
+  }
+  .nav{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:18px 32px;
+    max-width:1120px;
+    margin:0 auto;
+  }
+  .brand{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    font-family:'Space Grotesk', sans-serif;
+    font-weight:700;
+    font-size:1.05rem;
+    letter-spacing:0.01em;
+  }
+  .brand-mark{ width:32px; height:32px; object-fit:cover; flex-shrink:0; }
+  .nav-links{
+    display:flex;
+    gap:28px;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:0.78rem;
+    letter-spacing:0.03em;
+    text-transform:uppercase;
+  }
+  .nav-links a{ position:relative; color:var(--blue-deep); padding-bottom:3px; }
+  .nav-links a::after{ content:""; position:absolute; left:0; bottom:0; width:0%; height:2px; background:var(--signal); transition:width 0.25s ease; }
+  .nav-links a:hover::after{ width:100%; }
+  .nav-cta{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:0.75rem;
+    letter-spacing:0.03em;
+    text-transform:uppercase;
+    border:1.5px solid var(--ink);
+    padding:8px 16px;
+    transition:background 0.2s ease, color 0.2s ease;
+    white-space:nowrap;
+  }
+  .nav-cta:hover{ background:var(--ink); color:var(--paper); }
+  @media (max-width:760px){ .nav-links{ display:none; } }
+
+  .hero{ position:relative; background:var(--blue-deep); color:var(--paper); overflow:hidden; padding:64px 0 0; }
+  .hero-background{ position:absolute; inset:0; z-index:0; background:var(--blue-deep); }
+  .hero-background::after{ content:""; position:absolute; inset:0; background:rgba(10,28,45,0.74); }
+  .background-slide{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; opacity:0; transition:opacity 0.8s ease; }
+  .background-slide.active{ opacity:1; }
+  .grid-svg{ position:absolute; inset:0; z-index:1; width:100%; height:100%; opacity:0.5; }
+  .hero-inner{ position:relative; z-index:2; display:grid; grid-template-columns:1.05fr 0.95fr; gap:40px; align-items:center; padding-bottom:40px; }
+  @media (max-width:900px){ .hero-inner{ grid-template-columns:1fr; } }
+  .hero-logo{ width:112px; height:112px; display:block; margin-bottom:26px; filter:drop-shadow(0 0 18px rgba(0,132,255,0.25)); }
+  .eyebrow{ font-family:'IBM Plex Mono', monospace; font-size:0.75rem; letter-spacing:0.08em; text-transform:uppercase; color:var(--line-cyan); display:flex; align-items:center; gap:10px; margin-bottom:22px; }
+  .eyebrow::before{ content:""; width:26px; height:1px; background:var(--line-cyan); }
+  .hero h1{ font-size:clamp(2.4rem, 5vw, 3.6rem); line-height:1.05; max-width:11ch; }
+  .hero h1 .accent{ color:var(--signal); }
+  .hero p.sub{ margin-top:22px; max-width:46ch; color:#C9D8E2; font-size:1.05rem; }
+  .hero-ctas{ margin-top:34px; display:flex; gap:16px; flex-wrap:wrap; }
+  .hero-slideshow{ margin-top:34px; max-width:520px; }
+  .slide-controls{ display:flex; align-items:center; justify-content:space-between; gap:16px; margin-top:10px; }
+  .slide-button{ border:1px solid rgba(127,193,224,0.6); background:transparent; color:var(--paper); padding:7px 10px; font-family:'IBM Plex Mono', monospace; font-size:0.68rem; letter-spacing:0.04em; cursor:pointer; }
+  .slide-button:hover{ background:rgba(127,193,224,0.12); border-color:var(--line-cyan); }
+  .slide-dots{ display:flex; gap:8px; }
+  .slide-dot{ width:8px; height:8px; border:1px solid var(--line-cyan); border-radius:50%; background:transparent; padding:0; cursor:pointer; }
+  .slide-dot.active{ background:var(--signal); border-color:var(--signal); }
+  @media (max-width:900px){ .hero-slideshow{ max-width:none; } }
+  .btn-primary{ font-family:'IBM Plex Mono', monospace; font-size:0.85rem; letter-spacing:0.02em; text-transform:uppercase; background:var(--signal); color:#1a1006; padding:14px 24px; border:1.5px solid var(--signal); transition:transform 0.15s ease, background 0.15s ease; display:inline-flex; align-items:center; gap:8px; }
+  .btn-primary:hover{ background:var(--signal-dark); border-color:var(--signal-dark); transform:translateY(-1px); }
+  .btn-secondary{ font-family:'IBM Plex Mono', monospace; font-size:0.85rem; letter-spacing:0.02em; text-transform:uppercase; color:var(--paper); padding:14px 20px; border:1.5px solid rgba(238,234,224,0.4); transition:border-color 0.15s ease, background 0.15s ease; }
+  .btn-secondary:hover{ border-color:var(--paper); background:rgba(238,234,224,0.06); }
+  .diagram-wrap{ position:relative; }
+  .plan{ width:100%; height:auto; display:block; }
+  .plan .dim-line{ stroke:var(--line-cyan); stroke-width:1; opacity:0.85; }
+  .plan .dim-tick{ stroke:var(--line-cyan); stroke-width:1; }
+  .plan .frame{ stroke:var(--line-cyan); stroke-width:1.4; fill:none; }
+  .plan .frame-fill{ fill:rgba(127,193,224,0.06); }
+  .plan .label{ font-family:'IBM Plex Mono', monospace; font-size:9.5px; fill:var(--line-cyan); letter-spacing:0.03em; }
+  .plan .draw{ stroke-dasharray:900; stroke-dashoffset:900; animation:draw 2.2s ease forwards; }
+  @keyframes draw{ to{ stroke-dashoffset:0; } }
+  .titleblock{ margin-top:20px; border:1px solid rgba(127,193,224,0.5); background:rgba(255,255,255,0.03); font-family:'IBM Plex Mono', monospace; font-size:0.68rem; color:#AFC6D4; }
+  .tb-row{ display:flex; border-bottom:1px solid rgba(127,193,224,0.3); }
+  .tb-row:last-child{ border-bottom:none; }
+  .tb-cell{ flex:1; padding:8px 12px; border-right:1px solid rgba(127,193,224,0.3); }
+  .tb-cell:last-child{ border-right:none; }
+  .tb-cell strong{ display:block; color:var(--paper); font-size:0.72rem; margin-top:2px; }
+  .free-offer{ border:1px solid rgba(127,193,224,0.6); padding:34px; background:rgba(3,11,25,0.42); box-shadow:0 0 36px rgba(0,132,255,0.12); }
+  .free-offer-label{ font-family:'IBM Plex Mono', monospace; font-size:0.75rem; letter-spacing:0.08em; color:var(--line-cyan); text-transform:uppercase; }
+  .free-offer h2{ margin-top:18px; color:var(--paper); font-size:clamp(2rem, 4vw, 3.2rem); line-height:1.02; }
+  .free-offer h2 strong{ color:var(--signal); font-weight:600; }
+  .free-offer p{ margin-top:20px; color:#C9D8E2; max-width:34ch; font-size:0.98rem; }
+  .free-offer-rule{ width:100%; height:1px; margin:28px 0 18px; background:rgba(127,193,224,0.35); }
+  .free-offer-note{ font-family:'IBM Plex Mono', monospace; color:#AFC6D4; font-size:0.7rem; letter-spacing:0.04em; text-transform:uppercase; }
+  .free-offer-cta{ display:inline-flex; margin-top:24px; background:var(--signal); color:#1a1006; padding:12px 18px; border:1.5px solid var(--signal); font-family:'IBM Plex Mono', monospace; font-size:0.78rem; letter-spacing:0.04em; text-transform:uppercase; transition:background 0.15s ease, transform 0.15s ease; }
+  .free-offer-cta:hover{ background:var(--signal-dark); border-color:var(--signal-dark); transform:translateY(-1px); }
+
+  section{ padding:88px 0; position:relative; }
+  .section-head{ display:flex; align-items:baseline; gap:16px; margin-bottom:48px; flex-wrap:wrap; }
+  .section-num{ font-family:'IBM Plex Mono', monospace; font-size:0.8rem; color:var(--signal); border:1px solid var(--signal); padding:3px 9px; }
+  .section-head h2{ font-size:clamp(1.6rem, 3vw, 2.1rem); color:var(--blue-deep); }
+  .section-rule{ flex:1; height:1px; background:repeating-linear-gradient(90deg, var(--graphite) 0 6px, transparent 6px 11px); min-width:60px; }
+
+  .about-grid{ display:grid; grid-template-columns:1fr 1fr; gap:56px; }
+  @media (max-width:800px){ .about-grid{ grid-template-columns:1fr; } }
+  .about-grid p{ font-size:1.05rem; color:#2C3A42; margin-bottom:16px; max-width:52ch; }
+  .about-me{ background:#F5F1E8; }
+  .about-me-copy{ max-width:720px; font-family:'Space Grotesk', sans-serif; font-size:clamp(1.45rem, 3vw, 2.25rem); line-height:1.2; color:var(--blue-deep); }
+  .about-me-copy .highlight{ color:var(--signal); }
+  .value-callout{ margin-top:42px; padding:22px 0 0; border-top:1px solid var(--signal); display:flex; align-items:baseline; gap:24px; flex-wrap:wrap; }
+  .value-callout h3{ color:var(--signal); font-size:1.35rem; }
+  .value-callout p{ color:#2C3A42; max-width:58ch; font-size:0.98rem; }
+  .spec-list{ font-family:'IBM Plex Mono', monospace; font-size:0.82rem; border-top:1px solid var(--ink); }
+  .spec-list .row{ display:flex; justify-content:space-between; padding:12px 0; border-bottom:1px solid rgba(24,34,40,0.18); }
+  .spec-list .row span:first-child{ color:var(--graphite); text-transform:uppercase; letter-spacing:0.04em; font-size:0.72rem; }
+  .spec-list .row span:last-child{ font-weight:500; text-align:right; }
+
+  .services{ background:#E4DECF; }
+  .service-grid{ display:grid; grid-template-columns:repeat(4, 1fr); gap:1px; background:var(--ink); border:1px solid var(--ink); }
+  @media (max-width:900px){ .service-grid{ grid-template-columns:repeat(2,1fr); } }
+  @media (max-width:520px){ .service-grid{ grid-template-columns:1fr; } }
+  .service-card{ background:var(--paper); padding:28px 24px; transition:background 0.2s ease; }
+  .service-card:hover{ background:#fff; }
+  .service-tag{ font-family:'IBM Plex Mono', monospace; font-size:0.7rem; color:var(--signal); letter-spacing:0.04em; }
+  .service-card h3{ font-size:1.15rem; margin:10px 0 10px; color:var(--blue-deep); }
+  .service-card p{ font-size:0.9rem; color:var(--graphite); }
+
+  .process-list{ display:flex; flex-direction:column; }
+  .process-item{ display:grid; grid-template-columns:110px 1fr; gap:24px; padding:26px 0; border-top:1px solid rgba(24,34,40,0.18); align-items:start; }
+  .process-list .process-item:last-child{ border-bottom:1px solid rgba(24,34,40,0.18); }
+  .process-rev{ font-family:'IBM Plex Mono', monospace; font-size:0.75rem; color:var(--signal); }
+  .process-item h3{ font-size:1.1rem; color:var(--blue-deep); margin-bottom:6px; }
+  .process-item p{ color:#2C3A42; max-width:60ch; font-size:0.95rem; }
+
+  .projects{ background:var(--blue-deep); color:var(--paper); }
+  .projects .section-head h2{ color:var(--paper); }
+  .projects .section-rule{ background:repeating-linear-gradient(90deg, rgba(238,234,224,0.4) 0 6px, transparent 6px 11px); }
+  .projects .section-num{ color:var(--line-cyan); border-color:var(--line-cyan); }
+  .slot-grid{ display:grid; grid-template-columns:repeat(3, 1fr); gap:18px; }
+  @media (max-width:860px){ .slot-grid{ grid-template-columns:1fr; } }
+  .slot{ border:1px dashed rgba(127,193,224,0.5); padding:26px; min-height:160px; display:flex; flex-direction:column; justify-content:space-between; }
+  .slot-label{ font-family:'IBM Plex Mono', monospace; font-size:0.72rem; color:var(--line-cyan); letter-spacing:0.04em; }
+  .slot-status{ font-family:'IBM Plex Mono', monospace; font-size:0.72rem; color:#7F8E96; margin-top:16px; }
+  .slot h3{ font-size:1.05rem; margin-top:14px; color:#DCE6EC; font-weight:500; }
+
+  .contact-inner{ display:grid; grid-template-columns:1fr 1fr; gap:56px; }
+  @media (max-width:800px){ .contact-inner{ grid-template-columns:1fr; } }
+  .contact-inner p{ color:#2C3A42; max-width:48ch; margin-bottom:20px; font-size:1.02rem; }
+  .contact-detail{ font-family:'IBM Plex Mono', monospace; font-size:0.85rem; }
+  .contact-detail .row{ margin-bottom:10px; }
+  .contact-detail .row span{ color:var(--graphite); display:inline-block; width:100px; text-transform:uppercase; font-size:0.7rem; letter-spacing:0.04em; }
+  form{ display:flex; flex-direction:column; gap:14px; }
+  .field{ display:flex; flex-direction:column; gap:6px; }
+  .field label{ font-family:'IBM Plex Mono', monospace; font-size:0.7rem; text-transform:uppercase; letter-spacing:0.04em; color:var(--graphite); }
+  .field input, .field textarea{ border:none; border-bottom:1.5px solid var(--ink); background:transparent; padding:10px 2px; font-family:'IBM Plex Sans', sans-serif; font-size:0.95rem; color:var(--ink); }
+  .field input:focus, .field textarea:focus{ outline:none; border-bottom-color:var(--signal); }
+  .field textarea{ resize:vertical; min-height:90px; }
+  .submit-btn{ margin-top:8px; align-self:flex-start; font-family:'IBM Plex Mono', monospace; font-size:0.85rem; letter-spacing:0.02em; text-transform:uppercase; background:var(--ink); color:var(--paper); padding:14px 26px; border:1.5px solid var(--ink); cursor:pointer; transition:background 0.15s ease; }
+  .submit-btn:hover{ background:var(--signal); border-color:var(--signal); color:#1a1006; }
+
+  footer{ background:var(--ink); color:#9AA7AD; padding:40px 0 28px; }
+  .footer-inner{ display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px; font-family:'IBM Plex Mono', monospace; font-size:0.75rem; }
+  .footer-brand{ display:flex; align-items:center; gap:10px; }
+  .footer-logo{ width:38px; height:38px; object-fit:cover; }
+  .footer-inner .fbrand{ color:var(--paper); font-weight:500; }
+  a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible{ outline:2px solid var(--signal); outline-offset:2px; }
+</style>
+</head>
+<body>
+<header>
+  <nav class="nav">
+    <div class="brand"><img class="brand-mark" src="flics/JG Web Design Logo.jpg" alt="JG Web Design logo"> JG WEBSITE BUILDS</div>
+    <div class="nav-links">
+      <a href="#about">About</a><a href="#services">Services</a><a href="#process">Process</a><a href="#projects">Projects</a>
+    </div>
+    <a href="#contact" class="nav-cta">Get a quote</a>
+  </nav>
+</header>
+<section class="hero">
+  <div class="hero-background" aria-hidden="true">
+    <img class="background-slide active" src="flics/47CA30D4-8DC8-4B3A-914D-255380853B80_1_105_c.jpg" alt="">
+    <img class="background-slide" src="flics/FE954E87-CBA2-434B-8115-E9DBEF64CABE_1_105_c.jpg" alt="">
+  </div>
+  <svg class="grid-svg" preserveAspectRatio="none" viewBox="0 0 1200 640" xmlns="http://www.w3.org/2000/svg">
+    <defs><pattern id="gridPattern" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0 L0 0 0 40" fill="none" stroke="#7FC1E0" stroke-opacity="0.10" stroke-width="1"/></pattern></defs>
+    <rect width="1200" height="640" fill="url(#gridPattern)"/>
+  </svg>
+  <div class="wrap"><div class="hero-inner">
+    <div>
+      <img class="hero-logo" src="flics/JG Web Design Logo.jpg" alt="JG Web Design logo">
+      <div class="eyebrow">Now taking on new builds</div>
+      <h1>Websites, <span class="accent">drafted</span> and built for local business.</h1>
+      <p class="sub">JG Website Builds is a one-person shop making clean, fast, easy-to-manage websites for local companies — restaurants, contractors, shops, and service businesses that need a site that actually works for them.</p>
+      <div class="hero-ctas"><a href="#contact" class="btn-primary">Start a project →</a><a href="#services" class="btn-secondary">See what's included</a></div>
+      <div class="hero-slideshow" aria-label="Project images">
+        <div class="slide-controls">
+          <button class="slide-button" type="button" data-slide-direction="previous" aria-label="Show previous image">PREV</button>
+          <div class="slide-dots" aria-label="Choose an image">
+            <button class="slide-dot active" type="button" aria-label="Show image 1" aria-current="true"></button>
+            <button class="slide-dot" type="button" aria-label="Show image 2"></button>
+          </div>
+          <button class="slide-button" type="button" data-slide-direction="next" aria-label="Show next image">NEXT</button>
+        </div>
+      </div>
+    </div>
+    <div class="diagram-wrap">
+      <div class="free-offer">
+        <div class="free-offer-label">Limited first-build offer</div>
+        <h2>First website build is <strong>free.</strong></h2>
+        <p>One polished, professional website built around your business at no build fee. Standard pricing applies to future projects.</p>
+        <div class="free-offer-rule"></div>
+        <div class="free-offer-note">Now accepting the first project</div>
+        <a class="free-offer-cta" href="#contact">Book Now!</a>
+      </div>
+    </div>
+  </div></div>
+</section>
+<section id="about"><div class="wrap"><div class="section-head"><span class="section-num">01</span><h2>About the build</h2><div class="section-rule"></div></div><div class="about-grid"><div><p>I'm just getting started building websites for local companies — the kind of businesses that need a site done right but don't have the time, budget, or patience for a big agency.</p><p>Every project gets the same treatment: a real conversation about what the business actually needs, a site that's fast and easy to update, and someone who picks up the phone after it launches.</p><p>No templates dropped in and called done. Every build is planned out first — like a set of plans before construction starts.</p></div><div class="spec-list"><div class="row"><span>Based</span><span>Working with local businesses</span></div><div class="row"><span>Focus</span><span>Small business &amp; service companies</span></div><div class="row"><span>Turnaround</span><span>Typically 2–4 weeks</span></div><div class="row"><span>Handoff</span><span>You can edit it yourself, or I maintain it</span></div><div class="row"><span>Availability</span><span>Taking new projects now</span></div></div></div></div></section>
+<section class="about-me" id="about-me"><div class="wrap"><div class="section-head"><span class="section-num">02</span><h2>About me</h2><div class="section-rule"></div></div><p class="about-me-copy">Hello, my name is Jackson and I am currently a student attending Arizona State University. I have a passion for <span class="highlight">finance and entrepreneurship</span> and I can't wait to meet you!</p><div class="value-callout"><h3>Best prices. Better quality.</h3><p>I deliver thoughtful, professional websites at competitive prices, with the personal attention and quality that larger agencies often can't match.</p></div></div></section>
+<section class="services" id="services"><div class="wrap"><div class="section-head"><span class="section-num">03</span><h2>What's included</h2><div class="section-rule"></div></div><div class="service-grid"><div class="service-card"><div class="service-tag">DESIGN</div><h3>Custom layout</h3><p>A site built around your business, not a recycled theme — your services, your photos, your voice.</p></div><div class="service-card"><div class="service-tag">BUILD</div><h3>Fast &amp; mobile-ready</h3><p>Loads quickly and works properly on a phone, since that's where most of your customers will find you.</p></div><div class="service-card"><div class="service-tag">LAUNCH</div><h3>Domain &amp; hosting setup</h3><p>I handle getting it online — domain, hosting, and a site that's ready to be found on Google.</p></div><div class="service-card"><div class="service-tag">SUPPORT</div><h3>Ongoing updates</h3><p>Need hours changed or a new photo added? I keep the site current so you don't have to think about it.</p></div></div></div></section>
+<section id="process"><div class="wrap"><div class="section-head"><span class="section-num">03</span><h2>How a project runs</h2><div class="section-rule"></div></div><div class="process-list"><div class="process-item"><div class="process-rev">QUOTE</div><div><h3>Quote</h3><p>Send all of your business information you would like put on your website.</p></div></div><div class="process-item"><div class="process-rev">REV 02</div><div><h3>Draft</h3><p>A first layout of the site — pages, structure, and content — for you to react to before anything's built for real.</p></div></div><div class="process-item"><div class="process-rev">REV 03</div><div><h3>Build</h3><p>The full site gets built out and tested across phone, tablet, and desktop.</p></div></div><div class="process-item"><div class="process-rev">REV 04</div><div><h3>Launch</h3><p>Your site goes live on your domain, and I stick around after launch in case anything needs adjusting.</p></div></div></div></div></section>
+<section class="projects" id="projects"><div class="wrap"><div class="section-head"><span class="section-num">04</span><h2>Current Builds</h2><div class="section-rule"></div></div><div class="slot-grid"><div class="slot"><div class="slot-label">SLOT 01</div><h3>First project — Coming Soon!</h3><div class="slot-status">STATUS: COMING SOON</div></div><div class="slot"><div class="slot-label">SLOT 02</div><h3>Open</h3><div class="slot-status">STATUS: AVAILABLE</div></div><div class="slot"><div class="slot-label">SLOT 03</div><h3>Open</h3><div class="slot-status">STATUS: AVAILABLE</div></div></div></div></section>
+<section id="contact"><div class="wrap"><div class="section-head"><span class="section-num">05</span><h2>Start a project</h2><div class="section-rule"></div></div><div class="contact-inner"><div><p>Tell me a bit about your business and what you need from a website. I'll follow up to provide more information quickly.</p><div class="contact-detail"><div class="row"><span>Email</span> jgsitesdesign@gmail.com</div><div class="row"><span>Response</span> Within 1–2 business days</div></div></div><form onsubmit="event.preventDefault(); document.getElementById('formNote').style.display='block'; this.reset();"><div class="field"><label for="name">Name</label><input id="name" type="text" required></div><div class="field"><label for="business">Business name</label><input id="business" type="text"></div><div class="field"><label for="email">Email</label><input id="email" type="email" required></div><div class="field"><label for="details">What do you need?</label><textarea id="details"></textarea></div><button type="submit" class="submit-btn">Send it over</button><p id="formNote" class="mono" style="display:none; font-size:0.78rem; color:var(--graphite); margin-top:6px;">Thanks — this is a demo form for now, so wire it up to your email or a service like Formspree before going live.</p></form></div></div></section>
+<footer><div class="wrap footer-inner"><div class="footer-brand"><img class="footer-logo" src="flics/JG Web Design Logo.jpg" alt="JG Web Design logo"><div class="fbrand">JG WEBSITE BUILDS</div></div><div>© 2026 · Websites for local business</div></div></footer>
+<script>
+  const slides = document.querySelectorAll('.background-slide');
+  const dots = document.querySelectorAll('.slide-dot');
+  const slideshow = document.querySelector('.hero');
+  let currentSlide = 0;
+
+  function showSlide(index) {
+    currentSlide = (index + slides.length) % slides.length;
+    slides.forEach((slide, slideIndex) => slide.classList.toggle('active', slideIndex === currentSlide));
+    dots.forEach((dot, dotIndex) => {
+      const isActive = dotIndex === currentSlide;
+      dot.classList.toggle('active', isActive);
+      dot.toggleAttribute('aria-current', isActive);
+    });
+  }
+
+  document.querySelectorAll('[data-slide-direction]').forEach((button) => {
+    button.addEventListener('click', () => showSlide(currentSlide + (button.dataset.slideDirection === 'next' ? 1 : -1)));
+  });
+  dots.forEach((dot, dotIndex) => dot.addEventListener('click', () => showSlide(dotIndex)));
+
+  let slideshowTimer = setInterval(() => showSlide(currentSlide + 1), 5000);
+  slideshow.addEventListener('mouseenter', () => clearInterval(slideshowTimer));
+  slideshow.addEventListener('mouseleave', () => {
+    slideshowTimer = setInterval(() => showSlide(currentSlide + 1), 5000);
+  });
+</script>
+</body>
+</html>

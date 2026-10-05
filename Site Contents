@@ -39,6 +39,12 @@
     *{ animation-duration:0.01ms !important; animation-iteration-count:1 !important; transition-duration:0.01ms !important; }
   }
 
+  .inquiry-ribbon{ display:flex; align-items:center; justify-content:center; gap:18px; min-height:46px; padding:8px 20px; background:var(--signal); color:#1a1006; font-family:'IBM Plex Mono', monospace; font-size:0.78rem; font-weight:600; letter-spacing:0.07em; text-align:center; text-transform:uppercase; }
+  .inquiry-ribbon[hidden]{ display:none; }
+  .inquiry-ribbon a{ border-bottom:1px solid currentColor; padding-bottom:1px; }
+  .inquiry-ribbon a:hover{ color:var(--paper); }
+  @media (max-width:520px){ .inquiry-ribbon{ gap:10px; font-size:0.68rem; } }
+
   header{
     position:sticky;
     top:0;
@@ -215,6 +221,7 @@
 </style>
 </head>
 <body>
+<aside class="inquiry-ribbon" id="inquiryRibbon" aria-label="Limited-time inquiry announcement" hidden><strong>INQUIRIES NOW LIVE!</strong><a href="#contact">CREATE NOW <span aria-hidden="true">→</span></a></aside>
 <header>
   <nav class="nav">
     <div class="brand"><img class="brand-mark" src="flics/JG Web Design Logo.jpg" alt="JG Web Design logo"> JG WEBSITE BUILDS</div>
@@ -276,7 +283,14 @@
   const slideshow = document.querySelector('.hero');
   const contactForm = document.getElementById('contactForm');
   const formStatus = document.getElementById('formStatus');
+  const inquiryRibbon = document.getElementById('inquiryRibbon');
+  const inquiryRibbonExpiresAt = Date.parse('2026-10-12T22:38:18Z');
   let currentSlide = 0;
+
+  if (Date.now() < inquiryRibbonExpiresAt) {
+    inquiryRibbon.hidden = false;
+    window.setTimeout(() => { inquiryRibbon.hidden = true; }, inquiryRibbonExpiresAt - Date.now());
+  }
 
   contactForm.addEventListener('submit', async (event) => {
     event.preventDefault();

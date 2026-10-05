@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JG Website Builds</title>
+</head>
+<body>
+  <p>Loading JG Website Builds…</p>
+  <script>
+    fetch('/Site%20Contents')
+      .then((response) => {
+        if (!response.ok) throw new Error('Could not load the website.');
+        return response.text();
+      })
+      .then((html) => {
+        document.open();
+        document.write(html);
+        document.close();
+      })
+      .catch(() => {
+        document.body.innerHTML = '<p>Sorry, the site could not be loaded. Please try again shortly.</p>';
+      });
+  </script>
+</body>
+</html>

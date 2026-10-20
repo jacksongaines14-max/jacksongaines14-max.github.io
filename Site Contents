@@ -142,10 +142,30 @@
   .free-offer h2{ margin-top:18px; color:var(--paper); font-size:clamp(2rem, 4vw, 3.2rem); line-height:1.02; }
   .free-offer h2 strong{ color:var(--signal); font-weight:600; }
   .free-offer p{ margin-top:20px; color:#C9D8E2; max-width:34ch; font-size:0.98rem; }
+  .free-offer-price{ display:flex; align-items:baseline; flex-wrap:wrap; gap:10px; margin-top:20px; color:var(--paper); font-family:'Space Grotesk', sans-serif; font-size:1.35rem; font-weight:600; }
+  .free-offer-price del{ color:#AFC6D4; font-size:1rem; font-weight:400; }
+  .free-offer-price strong{ color:var(--signal); font-size:2rem; }
+  .free-offer-domain{ display:block; color:var(--line-cyan); font-size:0.95rem; }
   .free-offer-rule{ width:100%; height:1px; margin:28px 0 18px; background:rgba(127,193,224,0.35); }
   .free-offer-note{ font-family:'IBM Plex Mono', monospace; color:#AFC6D4; font-size:0.7rem; letter-spacing:0.04em; text-transform:uppercase; }
   .free-offer-cta{ display:inline-flex; margin-top:24px; background:var(--signal); color:#1a1006; padding:12px 18px; border:1.5px solid var(--signal); font-family:'IBM Plex Mono', monospace; font-size:0.78rem; letter-spacing:0.04em; text-transform:uppercase; transition:background 0.15s ease, transform 0.15s ease; }
   .free-offer-cta:hover{ background:var(--signal-dark); border-color:var(--signal-dark); transform:translateY(-1px); }
+  .founding-offer-popup{ width:min(520px, calc(100% - 32px)); max-width:none; max-height:calc(100% - 32px); margin:auto; padding:0; overflow:visible; border:1px solid rgba(127,193,224,0.7); background:var(--blue-deep); color:var(--paper); box-shadow:0 24px 80px rgba(0,0,0,0.45); }
+  .founding-offer-popup::backdrop{ background:rgba(5,13,24,0.76); backdrop-filter:blur(4px); }
+  .founding-offer-content{ position:relative; padding:clamp(28px, 7vw, 48px); }
+  .founding-offer-close{ position:absolute; top:12px; right:14px; width:38px; height:38px; border:1px solid rgba(238,234,224,0.4); background:transparent; color:var(--paper); font-size:1.5rem; line-height:1; cursor:pointer; }
+  .founding-offer-close:hover{ background:rgba(238,234,224,0.1); }
+  .founding-offer-kicker{ color:var(--line-cyan); font-family:'IBM Plex Mono', monospace; font-size:0.74rem; letter-spacing:0.08em; text-transform:uppercase; }
+  .founding-offer-popup h2{ margin-top:16px; color:var(--paper); font-size:clamp(2rem, 7vw, 3rem); line-height:1.05; }
+  .founding-offer-pricing{ display:flex; align-items:baseline; flex-wrap:wrap; gap:12px; margin-top:22px; }
+  .founding-offer-pricing del{ color:#AFC6D4; font-family:'Space Grotesk', sans-serif; font-size:1.25rem; }
+  .founding-offer-pricing strong{ color:var(--signal); font-family:'Space Grotesk', sans-serif; font-size:clamp(2.6rem, 10vw, 4rem); line-height:1; }
+  .founding-offer-domain{ margin-top:8px; color:var(--line-cyan); font-size:1.05rem; font-weight:600; }
+  .founding-offer-description{ margin-top:16px; color:#C9D8E2; }
+  .founding-offer-cta{ display:inline-flex; margin-top:24px; padding:13px 18px; border:1.5px solid var(--signal); background:var(--signal); color:#1a1006; font-family:'IBM Plex Mono', monospace; font-size:0.78rem; font-weight:600; letter-spacing:0.04em; text-transform:uppercase; }
+  .founding-offer-cta:hover{ border-color:var(--signal-dark); background:var(--signal-dark); }
+  @media (prefers-reduced-motion: no-preference){ .founding-offer-popup[open]{ animation:offer-pop-in 0.22s ease-out; } }
+  @keyframes offer-pop-in{ from{ opacity:0; transform:translateY(12px) scale(0.98); } to{ opacity:1; transform:translateY(0) scale(1); } }
 
   section{ padding:88px 0; position:relative; }
   .section-head{ display:flex; align-items:baseline; gap:16px; margin-bottom:48px; flex-wrap:wrap; }
@@ -238,6 +258,17 @@
 </style>
 </head>
 <body>
+<dialog class="founding-offer-popup" id="foundingOfferDialog" aria-labelledby="foundingOfferTitle">
+  <div class="founding-offer-content">
+    <button class="founding-offer-close" type="button" aria-label="Close offer">×</button>
+    <div class="founding-offer-kicker">Founding client deal</div>
+    <h2 id="foundingOfferTitle">Get your website built for less.</h2>
+    <div class="founding-offer-pricing"><del>$500</del><strong>$300</strong></div>
+    <p class="founding-offer-domain">+ Free domain for your first year</p>
+    <p class="founding-offer-description">Claim the founding client price and get your business online with a custom website.</p>
+    <a class="founding-offer-cta" href="#contact">Get this offer</a>
+  </div>
+</dialog>
 <aside class="inquiry-ribbon" id="inquiryRibbon" aria-label="Limited-time inquiry announcement" hidden><strong>INQUIRIES NOW LIVE!</strong><a href="#contact">CREATE NOW <span aria-hidden="true">→</span></a></aside>
 <header>
   <nav class="nav">
@@ -277,12 +308,14 @@
     </div>
     <div class="diagram-wrap">
       <div class="free-offer">
-        <div class="free-offer-label">Limited-time launch offer</div>
-        <h2>First two clients receive a <strong>free website build.</strong></h2>
-        <p>Two businesses can get a polished, professional website built around their needs at no build fee.</p>
+        <div class="free-offer-label">Founding client deal</div>
+        <h2>Get a custom website at a <strong>founding client price.</strong></h2>
+        <div class="free-offer-price"><del>$500</del><strong>$300</strong></div>
+        <span class="free-offer-domain">+ Free domain for your first year</span>
+        <p>Get your business online with a custom website and a free domain for the first year.</p>
         <div class="free-offer-rule"></div>
-        <div class="free-offer-note">Available to the first two clients</div>
-        <a class="free-offer-cta" href="#contact">Apply now</a>
+        <div class="free-offer-note">Founding client special</div>
+        <a class="free-offer-cta" href="#contact">Get this offer</a>
       </div>
     </div>
   </div></div>
@@ -302,8 +335,20 @@
   const contactForm = document.getElementById('contactForm');
   const formStatus = document.getElementById('formStatus');
   const inquiryRibbon = document.getElementById('inquiryRibbon');
+  const foundingOfferDialog = document.getElementById('foundingOfferDialog');
+  const foundingOfferStorageKey = 'foundingOfferDismissed';
   const inquiryRibbonExpiresAt = Date.parse('2026-10-12T22:38:18Z');
   let currentSlide = 0;
+
+  foundingOfferDialog.addEventListener('close', () => sessionStorage.setItem(foundingOfferStorageKey, 'true'));
+  foundingOfferDialog.querySelector('.founding-offer-close').addEventListener('click', () => foundingOfferDialog.close());
+  foundingOfferDialog.querySelector('.founding-offer-cta').addEventListener('click', () => foundingOfferDialog.close());
+  foundingOfferDialog.addEventListener('click', (event) => {
+    if (event.target === foundingOfferDialog) foundingOfferDialog.close();
+  });
+  if (sessionStorage.getItem(foundingOfferStorageKey) !== 'true') {
+    window.setTimeout(() => foundingOfferDialog.showModal(), 900);
+  }
 
   if (Date.now() < inquiryRibbonExpiresAt) {
     inquiryRibbon.hidden = false;

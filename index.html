@@ -26,7 +26,7 @@
 <body>
   <p>Loading JG Website Builds…</p>
   <script>
-    fetch('/Site%20Contents')
+    fetch(`/Site%20Contents?v=${Date.now()}`, { cache: 'no-store' })
       .then((response) => {
         if (!response.ok) throw new Error('Could not load the website.');
         return response.text();

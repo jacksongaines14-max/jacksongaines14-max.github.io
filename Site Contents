@@ -287,7 +287,7 @@
 <script>
   const slides = document.querySelectorAll('.background-slide');
   const dots = document.querySelectorAll('.slide-dot');
-  const slideshow = document.querySelector('.hero');
+  const slideshow = document.querySelector('.hero'); let currentSlide = 0;
   const contactForm = document.getElementById('contactForm');
   const formStatus = document.getElementById('formStatus');
   const inquiryRibbon = document.getElementById('inquiryRibbon');   const inquiryRibbonExpiresAt = Date.parse('2026-10-12T22:38:18Z');

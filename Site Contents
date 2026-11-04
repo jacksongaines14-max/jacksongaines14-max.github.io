@@ -286,7 +286,7 @@
 <footer><div class="wrap footer-inner"><div class="footer-brand"><img class="footer-logo" src="flics/JG Web Design Logo.jpg?v=2" alt="JG Web Design logo"><div class="fbrand">JG WEBSITE BUILDS</div></div><div>© 2026 · Websites for local business</div></div></footer>
 <script>
   const slides = document.querySelectorAll('.background-slide');
-  const dots = document.querySelectorAll('.slide-dot');
+  const dots = document.querySelectorAll('.hero-slideshow .slide-dot');
   const slideshow = document.querySelector('.hero'); let currentSlide = 0;
   const contactForm = document.getElementById('contactForm');
   const formStatus = document.getElementById('formStatus');

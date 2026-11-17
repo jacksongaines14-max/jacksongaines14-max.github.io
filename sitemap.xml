@@ -2,6 +2,34 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://jgsitebuilds.com/</loc>
-    <lastmod>2026-11-05</lastmod>
+    <lastmod>2026-11-17</lastmod>
+  </url>
+  <url>
+    <loc>https://jgsitebuilds.com/about</loc>
+    <lastmod>2026-11-17</lastmod>
+  </url>
+  <url>
+    <loc>https://jgsitebuilds.com/services</loc>
+    <lastmod>2026-11-17</lastmod>
+  </url>
+  <url>
+    <loc>https://jgsitebuilds.com/pricing</loc>
+    <lastmod>2026-11-17</lastmod>
+  </url>
+  <url>
+    <loc>https://jgsitebuilds.com/process</loc>
+    <lastmod>2026-11-17</lastmod>
+  </url>
+  <url>
+    <loc>https://jgsitebuilds.com/projects</loc>
+    <lastmod>2026-11-17</lastmod>
+  </url>
+  <url>
+    <loc>https://jgsitebuilds.com/testimonials</loc>
+    <lastmod>2026-11-17</lastmod>
+  </url>
+  <url>
+    <loc>https://jgsitebuilds.com/contact</loc>
+    <lastmod>2026-11-17</lastmod>
   </url>
 </urlset>
